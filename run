@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+usage='Usage: run file [-o [dir]]\n
+  -o, If the file is compiled the binary will output in dir\n
+      otherwise the output will ./bin.'
+
+print_usage () {
+  echo -e $usage; exit 1
+}
+
+# Create the output dir.
+bin_dir () {
+  if [ -z $1 ]; then
+    if mkdir bin 2> /dev/null; then
+      var_dir="bin"
+    else
+      var_dir=
+    fi
+  else
+    mkdir $1; var_dir=$1
+  fi
+}
+
+run_file () {
+  file=$1
+  ext=$(path -e $1)
+  
+  # TODO: upgrade path for print the base only.
+  base=${file%%.$ext}
+
+  case $ext in
+    c)
+      if [ -z $var_dir ]; then
+        gcc $file -o $base; ./$base
+      else
+        gcc $file -o "${var_dir}/$base"; ${var_dir}/$base
+      fi
+    ;;
+  cpp|cc|c++)
+      if [ -z $var_dir ]; then
+        g++ $file -o $base; ./$base
+      else
+        g++ $file -o "${var_dir}/$base"; ${var_dir}/$base
+      fi
+    ;;
+  js) js $file;;
+  esac
+}
+
+case $# in
+  0) print_usage;;
+  1) run_file $1;;
+  2) bin_dir; run_file $1;;
+  3)
+    if [ $2 == -o ]; then
+      bin_dir $3; run_file $1
+    else
+      print_usage
+    fi
+  ;;
+  *) print_usage;;
+esac
+

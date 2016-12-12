@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+usage='Usage: path [-dbe] [-d] [-b] [-e] path/of/file\n
+  -d, Print the name of directory.\n
+  -b, Print the base with his extension.\n
+  -e, Print the extension, wihout `.`\n
+  Wihout paramters print the type of file.'
+
+if [ $# -lt 2 ]; then
+  if [ -z $1 ]; then
+    echo -e $usage; exit 1
+  else
+    # File type.
+    tp=$(file $1)
+    echo "$1 is${tp##*:}"; exit 0
+  fi
+fi
+
+while getopts ":dbe" opt; do
+  case $opt in
+    d) echo ${2%/*};;
+    b) echo ${2##*/};;
+    e) echo ${2##*.};;
+    \?) echo -e $usage; exit 1;;
+  esac
+done
+
