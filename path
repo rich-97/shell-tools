@@ -4,6 +4,7 @@ usage='Usage: path [-dbe] [-d] [-b] [-e] path/of/file\n
   -d, Print the name of directory.\n
   -b, Print the base with his extension.\n
   -e, Print the extension, wihout `.`\n
+  -B, Print the base only.\n
   Wihout paramters print the type of file.'
 
 if [ $# -lt 2 ]; then
@@ -16,12 +17,35 @@ if [ $# -lt 2 ]; then
   fi
 fi
 
-while getopts ":dbe" opt; do
+print_usage () {
+  echo -e $usage; exit 1
+}
+
+dir_name () {
+  echo ${1%/*}
+}
+
+base_name () {
+  echo ${1##*/}
+}
+
+ext_name () {
+  echo ${1##*.}
+}
+
+base_only () {
+  temp_base=${1##*/} # Base
+  temp_ext=${1##*.} # Ext
+  echo ${temp_base%%.$temp_ext}
+}
+
+while getopts ":dbeB" opt; do
   case $opt in
-    d) echo ${2%/*};;
-    b) echo ${2##*/};;
-    e) echo ${2##*.};;
-    \?) echo -e $usage; exit 1;;
+    d) dir_name $2;;
+    b) base_name $2;;
+    e) ext_name $2;;
+    B) base_only $2;;
+    \?) print_usage;;
   esac
 done
 

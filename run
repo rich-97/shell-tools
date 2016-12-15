@@ -24,9 +24,7 @@ bin_dir () {
 run_file () {
   file=$1
   ext=$(path -e $1)
-  
-  # TODO: upgrade path for print the base only.
-  base=${file%%.$ext}
+  base=$(path -B $file)
 
   case $ext in
     c)
@@ -43,7 +41,9 @@ run_file () {
         g++ $file -o "${var_dir}/$base"; ${var_dir}/$base
       fi
     ;;
-  js) js $file;;
+  js) /usr/bin/env nodejs $file;;
+  py) /usr/bin/env python $file;;
+  sh) /usr/bin/env bash $file;;
   esac
 }
 
