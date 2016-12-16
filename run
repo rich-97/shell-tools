@@ -8,13 +8,15 @@ print_usage () {
   echo -e $usage; exit 1
 }
 
+var_dir=
+
 # Create the output dir.
 bin_dir () {
   if [ -z $1 ]; then
-    if mkdir bin 2> /dev/null; then
+    if [ -d bin ]; then
       var_dir="bin"
     else
-      var_dir=
+      mkdir bin; var_dir="bin"
     fi
   else
     mkdir $1; var_dir=$1
@@ -50,7 +52,13 @@ run_file () {
 case $# in
   0) print_usage;;
   1) run_file $1;;
-  2) bin_dir; run_file $1;;
+  2) 
+    if [ $2 == -o ]; then
+      bin_dir; run_file $1
+    else
+      print_usage
+    fi
+  ;;
   3)
     if [ $2 == -o ]; then
       bin_dir $3; run_file $1
