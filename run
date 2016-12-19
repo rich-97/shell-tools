@@ -45,7 +45,15 @@ run_file () {
     ;;
   js) /usr/bin/env nodejs $file;;
   py) /usr/bin/env python $file;;
+  php) /usr/bin/env php $file;;
   sh) /usr/bin/env bash $file;;
+  java)
+    if [ -z $var_dir ]; then
+      javac $file; java $base
+    else
+      javac -d $var_dir $file; java ${var_dir}/$base
+    fi
+  ;;
   esac
 }
 
