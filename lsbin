@@ -1,0 +1,38 @@
+#!/bin/bash
+ 
+list=${PATH//:/' '}
+list=${list//\}/' '}
+list=${list//\{/' '}
+
+color () {
+  if [ -z $1 ]; then
+    tput setaf 1
+  else
+    tput setaf $1
+  fi
+}
+
+lsbin () {
+  sum=0
+  for i in $list; do
+    if [ -d $i ]; then
+      files=$(ls $i)
+    else
+      color; echo "Directory no valid."
+      continue
+    fi
+
+    for j in $files; do
+      if [ -x $i/$j ]; then
+        let sum+=1
+        color 2; echo -n $j
+        color 3; echo " $(du -k $i/$j | cut -f 1)kb"
+      fi
+    done
+  done
+
+  color 6; echo "total: $sum"
+}
+
+lsbin | sort
+
