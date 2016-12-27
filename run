@@ -1,57 +1,57 @@
 #!/usr/bin/env bash
 
-usage='Usage: run file [-o [dir]]\n
-  -o, If the file is compiled the binary will output in dir\n
-      otherwise the output will ./bin.'
+usage="\
+Usage: run file [-o [dir]]
+    -o, If the file is compiled the binary will output in dir
+    otherwise the output will ./bin."
 
 print_usage () {
-  echo -e $usage; exit 1
+  echo "$usage"; exit 1
 }
 
 var_dir=
 
-# Create the output dir.
 bin_dir () {
-  if [ -z $1 ]; then
+  if [ -z "$1" ]; then
     if [ -d bin ]; then
       var_dir="bin"
     else
       mkdir bin; var_dir="bin"
     fi
   else
-    mkdir $1; var_dir=$1
+    mkdir "$1"; var_dir="$1"
   fi
 }
 
 run_file () {
   file=$1
-  ext=$(path -e $1)
-  base=$(path -B $file)
+  ext=$(path -e "$1")
+  base=$(path -B "$file")
 
   case $ext in
     c)
-      if [ -z $var_dir ]; then
-        gcc $file -o $base; ./$base
+      if [ -z "$var_dir" ]; then
+        gcc "$file" -o "$base"; ./"$base"
       else
-        gcc $file -o "${var_dir}/$base"; ${var_dir}/$base
+        gcc "$file" -o "$var_dir/$base"; "$var_dir/$base"
       fi
     ;;
   cpp|cc|c++)
-      if [ -z $var_dir ]; then
-        g++ $file -o $base; ./$base
+      if [ -z "$var_dir" ]; then
+        g++ "$file" -o "$base"; ./"$base"
       else
-        g++ $file -o "${var_dir}/$base"; ${var_dir}/$base
+        g++ "$file" -o "$var_dir/$base"; "$var_dir/$base"
       fi
     ;;
-  js) /usr/bin/env nodejs $file;;
-  py) /usr/bin/env python $file;;
-  php) /usr/bin/env php $file;;
-  sh) /usr/bin/env bash $file;;
+  js) command env nodejs "$file";;
+  py) command env python "$file";;
+  php) command env php "$file";;
+  sh) command env bash "$file";;
   java)
-    if [ -z $var_dir ]; then
-      javac $file; java $base
+    if [ -z "$var_dir" ]; then
+      javac "$file"; java "$base"
     else
-      javac -d $var_dir $file; java ${var_dir}/$base
+      javac -d "$var_dir" "$file"; java "$var_dir/$base"
     fi
   ;;
   esac
@@ -59,17 +59,17 @@ run_file () {
 
 case $# in
   0) print_usage;;
-  1) run_file $1;;
+  1) run_file "$1";;
   2) 
-    if [ $2 == -o ]; then
-      bin_dir; run_file $1
+    if [ "$2" == -o ]; then
+      bin_dir; run_file "$1"
     else
       print_usage
     fi
   ;;
   3)
-    if [ $2 == -o ]; then
-      bin_dir $3; run_file $1
+    if [ "$2" == -o ]; then
+      bin_dir "$3"; run_file "$1"
     else
       print_usage
     fi
