@@ -57,23 +57,26 @@ run_file () {
   esac
 }
 
-case $# in
-  0) print_usage;;
-  1) run_file "$1";;
-  2) 
-    if [ "$2" == -o ]; then
-      bin_dir; run_file "$1"
-    else
-      print_usage
-    fi
-  ;;
-  3)
-    if [ "$2" == -o ]; then
-      bin_dir "$3"; run_file "$1"
-    else
-      print_usage
-    fi
-  ;;
-  *) print_usage;;
-esac
-
+if [ $1 = "-h" ]; then
+    print_usage
+else
+    case $# in
+      0) print_usage;;
+      1) run_file "$1";;
+      2) 
+        if [ "$2" == -o ]; then
+          bin_dir; run_file "$1"
+        else
+          print_usage
+        fi
+      ;;
+      3)
+        if [ "$2" == -o ]; then
+          bin_dir "$3"; run_file "$1"
+        else
+          print_usage
+        fi
+      ;;
+      *) print_usage;;
+    esac
+fi
