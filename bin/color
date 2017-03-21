@@ -1,0 +1,47 @@
+#!/bin/bash
+
+print_usage () {
+    echo "usage..."
+}
+
+reset_color () {
+    echo -en '\e[0m'
+}
+
+get_color () {
+    color=${1:-'reset'}
+
+    # Colors.
+    colors=(black red green yellow blue purple cyan white)
+    
+    if test "$color" = 'reset'; then
+        reset_color
+    else
+        for (( i=0; i < ${#colors[*]}; i++)); do
+            if test "$color" = "${colors[i]}"; then
+                if test "$2" = '-g'; then
+                    tput setab $i 2> /dev/null
+                else
+                    tput setaf $i 2> /dev/null
+                fi
+            fi
+        done
+    fi
+}
+
+if [ -z "$1" ]; then
+    get_color
+else
+    if [ $# = 1 ]; then
+        get_color "$1"
+    else
+        while getopts ':bgu:' opt; do
+            case $opt in
+                b) get_color "$2"; tput bold 2> /dev/null;;
+                g) get_color "$2" -g;;
+                u) get_color "$2"; tput smul 2> /dev/null;;
+                \?) print_usage;;
+            esac
+        done
+    fi
+fi

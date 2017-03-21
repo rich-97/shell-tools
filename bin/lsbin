@@ -4,15 +4,7 @@ list=${PATH//:/' '}
 list=${list//\}/' '}
 list=${list//\{/' '}
 
-color () {
-  if [ -z "$1" ]; then
-    tput setaf 1
-  else
-    tput setaf "$1"
-  fi
-}
-
-lsbin () {
+_lsbin () {
   sum=0
   for i in $list; do
     if [ -d "$i" ]; then
@@ -22,17 +14,17 @@ lsbin () {
         if [ -x "$i/$j" -a -f "$i/$j" ]; then
           kb="$(du -k "$i/$j" | cut -f 1 )"
           let sum+=1
-          color 2; echo -n "$j: "
-          color 3; echo "${kb}kb"
+          color yellow; echo -n "$j: "
+          color green; echo "${kb}kb"
         fi
       done
     else
-      color; echo "Directory not valid."
+        color red; echo "Invalid directory $i."
     fi
   done
 
-  color 6; echo "total: $sum"
+  color blue; echo "total: $sum"; color
 }
 
-lsbin
+_lsbin
 

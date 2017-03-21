@@ -1,0 +1,31 @@
+#!/bin/bash
+
+arr=$(cat ~/.clean-hs)
+c=0
+
+for i in $arr; do
+file="$HOME/$i"
+
+    if [ "$file" = "$HISTFILE" ]; then
+        read -p "¿Do you want to delete $file? [y/n]: " des
+
+        case $des in 
+            y|ye|yes)
+                if ! command rm "$file" 2> /dev/null; then
+                    color red; echo "The file $file doesn't exists."; color
+                else
+                    let c+=1
+                fi
+            ;;
+            *) color blue; echo "Ok.";;
+        esac
+    else
+        if ! command rm "$file" 2> /dev/null; then
+            color red; echo "The file $file doesn't exists."; color
+        else
+            let c+=1
+        fi
+    fi
+done
+
+color blue; echo "$c files we're eliminated."; color
