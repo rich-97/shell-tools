@@ -10,7 +10,7 @@ git clone https://github.com/rich-97/shell-tools ~/.shell-tools
 Write in your `.bashrc` file.
 
 ```shell
-export PATH=${PATH}:~/.shell-tools/shell-tools/bin
+export PATH=${PATH}:~/.shell-tools/bin
 ```
 
 ## Usage:
