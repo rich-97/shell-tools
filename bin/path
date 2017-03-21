@@ -1,50 +1,55 @@
 #!/usr/bin/env bash
 
-usage='Usage: path [-dbe] [-d] [-b] [-e] path/of/file\n
-  -d, Print the name of directory.\n
-  -b, Print the base with his extension.\n
-  -e, Print the extension, wihout `.`\n
-  -B, Print the base only.\n
-  Wihout paramters print the type of file.'
+# Writed by Ricardo Moreno 2016-2017.
+# Script for manage paths in the terminal.
 
-if [ $# -lt 2 ]; then
-  if [ -z $1 ]; then
-    echo -e $usage; exit 1
-  else
-    # File type.
-    tp=$(file $1)
-    echo "$1 is${tp##*:}"; exit 0
-  fi
-fi
+usage="\
+Description:
+    Script for manage paths in the terminal.
+
+Usage:
+    path [-dbeB] [-d] [-b] [-e] [-B] [path/of/file]
+
+Options:
+    -h, Display the usage of the command.
+    -d, Print the name of directory.
+    -b, Print the base with his extension.
+    -e, Print the extension, without the dot.
+    -B, Print the base only without the extension.
+"
 
 print_usage () {
-  echo -e $usage; exit 1
+    echo "$usage"; exit 1
 }
 
 dir_name () {
-  echo ${1%/*}
+  echo "${1%/*}"
 }
 
 base_name () {
-  echo ${1##*/}
+  echo "${1##*/}"
 }
 
 ext_name () {
-  echo ${1##*.}
+  echo "${1##*.}"
 }
 
 base_only () {
   temp_base=${1##*/} # Base
   temp_ext=${1##*.} # Ext
-  echo ${temp_base%%.$temp_ext}
+  echo "${temp_base%%.$temp_ext}"
 }
+
+if [ $# -lt 2 ]; then
+    print_usage
+fi
 
 while getopts ":dbeB" opt; do
   case $opt in
-    d) dir_name $2;;
-    b) base_name $2;;
-    e) ext_name $2;;
-    B) base_only $2;;
+    d) dir_name "$2";;
+    b) base_name "$2";;
+    e) ext_name "$2";;
+    B) base_only "$2";;
     \?) print_usage;;
   esac
 done

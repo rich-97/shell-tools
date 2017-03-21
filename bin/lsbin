@@ -1,8 +1,26 @@
 #!/usr/bin/env bash
- 
+
+# Writed by Ricardo Moreno 2016-2017.
+# Script for list all binaries in your machine.
+
 list=${PATH//:/' '}
 list=${list//\}/' '}
 list=${list//\{/' '}
+usage="\
+Description:
+    Script for list all binaries (executables) in your machine.
+
+Usage:
+    lsbin [option]
+
+Options:
+    -h, Display the usage of the command.
+    -s, Display all binaries in the alphabetic order.
+"
+
+print_usage () {
+    echo "$usage"; exit 1
+}
 
 _lsbin () {
   sum=0
@@ -26,5 +44,15 @@ _lsbin () {
   color blue; echo "total: $sum"; color
 }
 
-_lsbin
+if [ -z "$1" ]; then
+    _lsbin
+else
+    while getopts ':hs' opt; do
+        case "$opt" in
+            h) print_usage;;
+            s) _lsbin | sort;;
+            \?) print_usage;;
+        esac
+    done
+fi
 

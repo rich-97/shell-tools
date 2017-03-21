@@ -1,31 +1,58 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-arr=$(cat ~/.clean-hs)
-c=0
+# Writed by Ricardo Moreno 2016-2017.
+# Script for delete all history files.
 
-for i in $arr; do
-file="$HOME/$i"
+usage="\
+Description:
+    Script for delete all history files.
 
-    if [ "$file" = "$HISTFILE" ]; then
-        read -p "¿Do you want to delete $file? [y/n]: " des
+Usage:
+    clean-hs [option] [source]
 
-        case $des in 
-            y|ye|yes)
-                if ! command rm "$file" 2> /dev/null; then
-                    color red; echo "The file $file doesn't exists."; color
-                else
-                    let c+=1
-                fi
-            ;;
-            *) color blue; echo "Ok.";;
-        esac
-    else
-        if ! command rm "$file" 2> /dev/null; then
-            color red; echo "The file $file doesn't exists."; color
+Options:
+    -h, Display the usage of the command.
+
+NOTE:
+    The parameter source should be a list of history files.
+    If you want you can create a file named .clean-hs with the list,
+    That file will be the source.
+"
+
+print_usage () {
+    echo "$usage"; exit 1
+}
+
+if [ "$1" = '-h' ]; then
+    print_usage
+else
+    list=${1:-~/.clean-hs}
+    arr=$(cat "$list")
+    c=0
+    for i in $arr; do
+    file="$HOME/$i"
+
+        if [ "$file" = "$HISTFILE" ]; then
+            read -p "¿Do you want to delete $file? [y/n]: " des
+
+            case $des in 
+                y|ye|yes)
+                    if ! command rm "$file" 2> /dev/null; then
+                        color red; echo "The file $file doesn't exists."; color
+                    else
+                        let c+=1
+                    fi
+                ;;
+                *) color blue; echo "Ok.";;
+            esac
         else
-            let c+=1
+            if ! command rm "$file" 2> /dev/null; then
+                color red; echo "The file $file doesn't exists."; color
+            else
+                let c+=1
+            fi
         fi
-    fi
-done
+    done
+fi
 
 color blue; echo "$c files we're eliminated."; color

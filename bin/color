@@ -1,7 +1,27 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Write by Ricardo Moreno 2017.
+# Script for display colors in the terminal.
+
+usage="\
+Description:
+    Script for display text with color in the terminal.
+
+Usage:
+    color [option] [color_name]
+
+Options:
+    -g, Display text with background.
+    -b, Display text in bold.
+    -u, Display text with underline.
+
+NOTE:
+    With none parameter the color will be gray or the color of reset.
+"
+
 
 print_usage () {
-    echo "usage..."
+    echo "$usage"; exit 1
 }
 
 reset_color () {
@@ -33,7 +53,11 @@ if [ -z "$1" ]; then
     get_color
 else
     if [ $# = 1 ]; then
-        get_color "$1"
+        if [ "$1" = '-h' ]; then
+            print_usage
+        else
+            get_color "$1"
+        fi
     else
         while getopts ':bgu:' opt; do
             case $opt in

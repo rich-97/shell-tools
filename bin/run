@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
 
+# Writed by Ricardo Moreno 2016-2017.
+# Script for run or (compile and run) any file in the terminal.
+
 usage="\
-Usage: run file [-o [dir]]
-    -o, If the file is compiled the binary will output in dir
-    otherwise the output will ./bin."
+Description:
+    Script for run or (compile and run) any file.
+
+Usage:
+    run file [option] [output]
+
+Options:
+    -h, Display the usage of the command.
+    -o, If the file is compiled the binary will output in an dir specific.
+
+NOTE:
+    Without the parameter output the file compiled will be save in ./bin.
+"
 
 print_usage () {
   echo "$usage"; exit 1
@@ -57,7 +70,7 @@ run_file () {
   esac
 }
 
-if [ $1 = "-h" ]; then
+if [ "$1" = "-h" ]; then
     print_usage
 else
     case $# in
