@@ -8,7 +8,7 @@ Description:
     Script for run or (compile and run) any file.
 
 Usage:
-    run file [option] [output]
+    run [option] [file] [output]
 
 Options:
     -h, Display the usage of the command.
