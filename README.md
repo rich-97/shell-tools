@@ -7,6 +7,7 @@
 -   `run` run or (compile and run) any file.
 -   `path` tools for manipuling paths in the terminal.
 -   `color` Command for display text with colors and styles.
+-   `yon` Script for parser desition like yes/no.
 
 ## Installation:
 

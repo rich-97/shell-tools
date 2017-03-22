@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# Writed by Ricardo Moreno 2017.
+# Inspired on https://github.com/sindresorhus/yn.
+
+usage="\
+Description:
+
+    Script for parser yes or no desition in the terminal.
+
+Usage:
+    
+    yon [options] [prompt]
+
+Options:
+
+    -h, Display the usage of the command.
+    -p, Parameter for use a prompt.
+
+NOTE:
+    
+    If the value enter in the input of the command is one of the list,
+    (y, ye, yes, true or 1) the exit status code will be 0 otherwise 1.
+
+    Also work without a prompt.
+"
+
+print_usage () {
+    echo "$usage"; false
+}
+
+parser () {
+    case "$1" in
+        y|ye|yes|true|1) true;;
+        n|no|false|0) false;;
+        \?) false;;
+    esac
+}
+
+read_val () {
+    if [ -z "$1" ]; then
+        read val
+
+        parser "$val"
+    else
+        read -p "$1" val
+
+        parser "$val"
+    fi
+}
+
+if [ -z "$1" ]; then
+    read_val
+else
+    if [ -z "$2" ]; then
+        print_usage
+    else
+        while getopts ':hp:' opt; do
+            case $opt in
+                h) print_usage;;
+                p) read_val "$2";;
+                \?) print_usage;;
+            esac
+        done
+    fi
+fi
+
