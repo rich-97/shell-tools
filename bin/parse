@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # Writed by Ricardo Moreno 2016-2017.
-# Script for manage paths in the terminal.
+# Script for parser paths in the terminal.
 
 usage="\
 Description:
-    Script for manage paths in the terminal.
+    Script for parser paths in the terminal.
 
 Usage:
-    path [-dbeB] [-d] [-b] [-e] [-B] [path/of/file]
+    parse [-dbeB] [-h] [-d] [-b] [-e] [-B] [path/of/file]
 
 Options:
     -h, Display the usage of the command.

@@ -5,7 +5,7 @@
 -   `lsbin` list all binaries (executables) found in `$PATH`.
 -   `clean-hs` clean history files, per example, `~/.bash_history`.
 -   `run` run or (compile and run) any file.
--   `path` tools for manipuling paths in the terminal.
+-   `parse` tools for parser paths in the terminal.
 -   `color` Command for display text with colors and styles.
 -   `yon` Script for parser desition like yes/no.
 
