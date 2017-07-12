@@ -8,6 +8,7 @@
 -   `parse` tools for parser paths in the terminal.
 -   `color` Command for display text with colors and styles.
 -   `yon` Script for parser desition like yes/no.
+-   `repocheck` Script for check if some git repository have dirty (unstaged & uncommited).
 
 ## Installation:
 

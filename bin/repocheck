@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+# Writed by Ricardo Moreno 2017.
+
+usage="\
+Description:
+    Script for check if some repository have unstaged changes or uncommited changes.
+
+Usage:
+    repocheck <path/to/repos>
+
+Options:
+    -h, Display the usage of the command.
+"
+
+# Function for print the usage of the command.
+print_usage () {
+    echo "$usage"; exit 1
+}
+
+# Function for check the repositories.
+repocheck () {
+    if [ "$1" = "" ]; then
+        print_usage
+    else
+        repos=$(ls "$1")
+
+        for repo in $repos; do
+            git_status=$(git -C "$1/$repo" status -s)
+            
+            # When there are an error...
+            if [ "$?" != "0" ]; then
+                color red; echo "$repo"; color reset
+            else
+                if [ "$git_status" != "" ]; then
+                    color yellow; echo "$repo"; color reset
+
+                    # This is for pretty format.
+                    if [ "$(echo "$git_status" | grep '^??' )" != "" ]; then
+                        echo "${git_status//"??"/\ \?\?}"
+                    else
+                        color reset; echo "$git_status"
+                    fi
+                fi
+            fi
+        done
+    fi
+}
+
+# If the param is not passed, the paths will be ~/.repocheck.
+if [ "$1" = "" ]; then
+    repos_paths=$(cat ~/.repocheck)
+
+    for repo_path in $repos_paths; do
+        repocheck "$repo_path"
+    done
+else
+    if [ "$1" = "-h" ]; then
+        repocheck
+    else
+        repocheck "$1"
+    fi
+fi
+
